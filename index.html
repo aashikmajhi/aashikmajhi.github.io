@@ -7,6 +7,7 @@
 
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
         font-family: Arial, sans-serif;
         background: #1e252d;
@@ -18,20 +19,61 @@
     /* Container */
     .container { width: 90%; max-width: 1200px; margin: auto; }
 
-    /* Navbar */
+    /* NAVBAR */
     nav {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        background: #1e252df2;
+        backdrop-filter: blur(8px);
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 18px 0;
+        border-bottom: 1px solid #2f3741;
     }
     nav ul {
         display: flex;
         gap: 30px;
         list-style: none;
     }
+    nav ul li a {
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: 0.3s;
+    }
+    nav ul li a.active {
+        background: #3b82f6;
+        color: #fff;
+    }
 
-    /* Hero Section */
+    /* HAMBURGER */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+    }
+    .hamburger div {
+        width: 26px;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        background: #1e252d;
+        border-top: 1px solid #2f3741;
+        padding: 10px 0;
+    }
+    .mobile-menu a {
+        padding: 12px 20px;
+        border-bottom: 1px solid #2f3741;
+    }
+
+    /* HERO */
     .hero {
         text-align: center;
         padding: 80px 20px;
@@ -49,12 +91,14 @@
         border-radius: 6px;
         color: #fff;
         font-size: 15px;
+        cursor: pointer;
     }
     .btn-outline {
         border: 1px solid #3b82f6;
         padding: 12px 22px;
         border-radius: 6px;
         color: #3b82f6;
+        cursor: pointer;
         background: transparent;
     }
 
@@ -135,7 +179,7 @@
         border-radius: 5px;
     }
 
-    /* AI Suggestion Box */
+    /* AI Suggestions */
     .ai-box {
         background: #2a323c;
         padding: 25px;
@@ -155,7 +199,7 @@
         color: #dbe1e7;
     }
 
-    /* Contact Section */
+    /* Contact */
     .contact-box {
         margin-top: 50px;
         padding: 25px;
@@ -170,112 +214,144 @@
         color: #9aa5b3;
     }
 
-    /* Mobile */
+    /* Scroll to top */
+    #scrollTop {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: #3b82f6;
+        padding: 12px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+        color: #fff;
+        font-size: 18px;
+    }
+
+    /* MOBILE */
     @media (max-width: 600px) {
-        .hero h1 { font-size: 30px; }
         nav ul { display: none; }
+        .hamburger { display: flex; }
+        .hero h1 { font-size: 30px; }
     }
 </style>
 </head>
 
 <body>
 
+<!-- NAV -->
+<nav>
+    <h2>Aashik Majhi</h2>
+
+    <!-- Desktop Menu -->
+    <ul id="navbar">
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Hamburger -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div><div></div><div></div>
+    </div>
+</nav>
+
+<!-- Mobile Dropdown -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#skills" onclick="toggleMenu()">Skills</a>
+    <a href="#projects" onclick="toggleMenu()">Projects</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
 <div class="container">
 
-    <!-- NAV -->
-    <nav>
-        <h2>Aashik Majhi</h2>
-        <ul>
-            <li><a href="#">Skills</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
-
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" id="home">
         <h1>Expert Full-Stack Developer</h1>
         <p>Specializing in crafting exceptional digital experiences with Web, Mobile, and Power Platform solutions.</p>
 
         <div class="btn-group">
-            <a class="btn-outline" href="#">View Projects</a>
-            <a class="btn" href="#">Contact Me</a>
+            <a class="btn-outline" href="#projects">View Projects</a>
+            <a class="btn" href="#contact">Contact Me</a>
         </div>
     </section>
 
     <!-- SKILLS -->
-    <h2 class="section-title">My Technical Skills</h2>
-    <p class="section-sub">A snapshot of the technologies I work with.</p>
+    <section id="skills">
+        <h2 class="section-title">My Technical Skills</h2>
+        <p class="section-sub">A snapshot of the technologies I work with.</p>
 
-    <div class="skills-grid">
+        <div class="skills-grid">
 
-        <!-- Skill Category Example -->
-        <div class="skill-card">
-            <h3>Frontend Development</h3>
+            <!-- Skill Category Example -->
+            <div class="skill-card">
+                <h3>Frontend Development</h3>
 
-            <p class="skill-label"><span>React & NextJS</span><span>95%</span></p>
-            <div class="bar"><span style="width:95%"></span></div>
+                <p class="skill-label"><span>React & NextJS</span><span>95%</span></p>
+                <div class="bar"><span style="width:95%"></span></div>
 
-            <p class="skill-label"><span>TypeScript</span><span>92%</span></p>
-            <div class="bar"><span style="width:92%"></span></div>
+                <p class="skill-label"><span>TypeScript</span><span>92%</span></p>
+                <div class="bar"><span style="width:92%"></span></div>
 
-            <p class="skill-label"><span>Tailwind CSS</span><span>89%</span></p>
-            <div class="bar"><span style="width:89%"></span></div>
+                <p class="skill-label"><span>Tailwind CSS</span><span>89%</span></p>
+                <div class="bar"><span style="width:89%"></span></div>
 
-            <p class="skill-label"><span>React Native</span><span>85%</span></p>
-            <div class="bar"><span style="width:85%"></span></div>
+                <p class="skill-label"><span>React Native</span><span>85%</span></p>
+                <div class="bar"><span style="width:85%"></span></div>
+            </div>
+
+            <div class="skill-card">
+                <h3>Backend Development</h3>
+
+                <p class="skill-label"><span>NodeJS & Express</span><span>90%</span></p>
+                <div class="bar"><span style="width:90%"></span></div>
+
+                <p class="skill-label"><span>FastAPI</span><span>100%</span></p>
+                <div class="bar"><span style="width:100%"></span></div>
+
+                <p class="skill-label"><span>PostgreSQL</span><span>85%</span></p>
+                <div class="bar"><span style="width:85%"></span></div>
+
+                <p class="skill-label"><span>REST APIs</span><span>92%</span></p>
+                <div class="bar"><span style="width:92%"></span></div>
+            </div>
+
+            <div class="skill-card">
+                <h3>Mobile Development</h3>
+
+                <p class="skill-label"><span>Flutter</span><span>77%</span></p>
+                <div class="bar"><span style="width:77%"></span></div>
+
+                <p class="skill-label"><span>Kotlin</span><span>70%</span></p>
+                <div class="bar"><span style="width:70%"></span></div>
+
+                <p class="skill-label"><span>Java</span><span>60%</span></p>
+                <div class="bar"><span style="width:60%"></span></div>
+
+                <p class="skill-label"><span>Dart</span><span>65%</span></p>
+                <div class="bar"><span style="width:65%"></span></div>
+            </div>
+
+            <div class="skill-card">
+                <h3>Power Platform & Automation</h3>
+
+                <p class="skill-label"><span>Power Apps</span><span>95%</span></p>
+                <div class="bar"><span style="width:95%"></span></div>
+
+                <p class="skill-label"><span>Power Automate</span><span>90%</span></p>
+                <div class="bar"><span style="width:90%"></span></div>
+
+                <p class="skill-label"><span>Dataverse</span><span>85%</span></p>
+                <div class="bar"><span style="width:85%"></span></div>
+
+                <p class="skill-label"><span>SharePoint</span><span>85%</span></p>
+                <div class="bar"><span style="width:85%"></span></div>
+            </div>
         </div>
-
-        <div class="skill-card">
-            <h3>Backend Development</h3>
-
-            <p class="skill-label"><span>NodeJS & Express</span><span>90%</span></p>
-            <div class="bar"><span style="width:90%"></span></div>
-
-            <p class="skill-label"><span>FastAPI</span><span>100%</span></p>
-            <div class="bar"><span style="width:100%"></span></div>
-
-            <p class="skill-label"><span>PostgreSQL</span><span>85%</span></p>
-            <div class="bar"><span style="width:85%"></span></div>
-
-            <p class="skill-label"><span>REST APIs</span><span>92%</span></p>
-            <div class="bar"><span style="width:92%"></span></div>
-        </div>
-
-        <div class="skill-card">
-            <h3>Mobile Development</h3>
-
-            <p class="skill-label"><span>Flutter</span><span>77%</span></p>
-            <div class="bar"><span style="width:77%"></span></div>
-
-            <p class="skill-label"><span>Kotlin</span><span>70%</span></p>
-            <div class="bar"><span style="width:70%"></span></div>
-
-            <p class="skill-label"><span>Java</span><span>60%</span></p>
-            <div class="bar"><span style="width:60%"></span></div>
-
-            <p class="skill-label"><span>Dart</span><span>65%</span></p>
-            <div class="bar"><span style="width:65%"></span></div>
-        </div>
-
-        <div class="skill-card">
-            <h3>Power Platform & Automation</h3>
-
-            <p class="skill-label"><span>Power Apps</span><span>95%</span></p>
-            <div class="bar"><span style="width:95%"></span></div>
-
-            <p class="skill-label"><span>Power Automate</span><span>90%</span></p>
-            <div class="bar"><span style="width:90%"></span></div>
-
-            <p class="skill-label"><span>Dataverse</span><span>85%</span></p>
-            <div class="bar"><span style="width:85%"></span></div>
-
-            <p class="skill-label"><span>SharePoint</span><span>85%</span></p>
-            <div class="bar"><span style="width:85%"></span></div>
-        </div>
-    </div>
+    </section>
 
     <!-- PROJECTS -->
+    <section id="projects">
     <h2 class="section-title" style="margin-top:60px;">Featured Projects</h2>
     <p class="section-sub">Here are some of the projects I've worked on.</p>
 
@@ -444,10 +520,9 @@
     </div>
 
 </div>
+</section>
 
-
-    <!-- AI Suggestions -->
-    <div class="ai-box">
+<div class="ai-box">
         <h3 class="ai-title">💡 AI Portfolio Suggestions</h3>
 
         <div class="input-group">
@@ -464,32 +539,76 @@
     </div>
 
     <!-- CONTACT -->
-    <h2 class="section-title" style="margin-top:60px;">Get In Touch</h2>
+    <section id="contact">
+        <h2 class="section-title" style="margin-top:60px;">Get In Touch</h2>
 
-    <div class="contact-box">
-        <div class="input-group">
-            <label>Name</label>
-            <input type="text" placeholder="Your Name">
+        <div class="contact-box">
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" placeholder="Your Name">
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" placeholder="example@email.com">
+            </div>
+
+            <div class="input-group">
+                <label>Message</label>
+                <textarea rows="4" placeholder="Type your message…"></textarea>
+            </div>
+
+            <a class="btn" href="#">Send Message</a>
         </div>
-
-        <div class="input-group">
-            <label>Email</label>
-            <input type="email" placeholder="example@email.com">
-        </div>
-
-        <div class="input-group">
-            <label>Message</label>
-            <textarea rows="4" placeholder="Type your message…"></textarea>
-        </div>
-
-        <a class="btn" href="#">Send Message</a>
-    </div>
+    </section>
 
     <footer>
         © 2025 Aashik Majhi. All rights reserved.
     </footer>
 
 </div>
+
+<!-- Scroll to top -->
+<div id="scrollTop" onclick="scrollToTop()">↑</div>
+
+<script>
+    /* MOBILE MENU */
+    function toggleMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    }
+
+    /* ACTIVE NAVIGATION ON SCROLL */
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll("nav ul li a");
+
+    window.addEventListener("scroll", () => {
+        let current = "";
+
+        sections.forEach((section) => {
+            const top = window.scrollY;
+            if (top >= section.offsetTop - 200) {
+                current = section.getAttribute("id");
+            }
+        });
+
+        navLinks.forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute("href") === "#" + current) {
+                a.classList.add("active");
+            }
+        });
+
+        /* Scroll-to-top visibility */
+        document.getElementById("scrollTop").style.display =
+            window.scrollY > 300 ? "block" : "none";
+    });
+
+    /* Scroll to top */
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+</script>
 
 </body>
 </html>
