@@ -1,614 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Aashik Majhi – Full-Stack Developer Portfolio</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Aashik Majhi — Portfolio</title>
 
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-        font-family: Arial, sans-serif;
-        background: #1e252d;
-        color: #dbe1e7;
-        line-height: 1.6;
-    }
-    a { color: inherit; text-decoration: none; }
+  /* BASIC RESET */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root{
+    --bg: #0f1720;
+    --surface: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.04);
+    --muted: #a6b0bd;
+    --text: #e6eef6;
+    --primary: #7c3aed; /* default accent */
+    --card-blur: 8px;
+  }
+  body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+         background: linear-gradient(180deg,#071026 0%, #0f1720 100%);
+         color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased;
+         padding-bottom:60px;
+  }
 
-    /* Container */
-    .container { width: 90%; max-width: 1200px; margin: auto; }
+  /* PROGRESS BAR */
+  #progress {
+    position: fixed; left:0; top:0; height:4px; background: linear-gradient(90deg,var(--primary), #06b6d4);
+    width:0%; z-index:9999; transition: width 0.12s linear;
+  }
 
-    /* NAVBAR */
-    nav {
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        background: #1e252df2;
-        backdrop-filter: blur(8px);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 18px 0;
-        border-bottom: 1px solid #2f3741;
-    }
-    nav ul {
-        display: flex;
-        gap: 30px;
-        list-style: none;
-    }
-    nav ul li a {
-        padding: 6px 10px;
-        border-radius: 4px;
-        transition: 0.3s;
-    }
-    nav ul li a.active {
-        background: #3b82f6;
-        color: #fff;
-    }
+  /* NAV */
+  nav{
+    position: sticky; top:0; z-index:999; backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(7,10,14,0.55), rgba(7,10,14,0.35));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+  }
+  .nav-inner{ max-width:1100px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand{ display:flex; gap:12px; align-items:center; }
+  .logo {
+    width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--primary), #06b6d4); color:white; font-weight:700; font-size:16px;
+    box-shadow: 0 6px 18px rgba(124,58,237,0.18);
+  }
+  .brand h1{ font-size:16px; color:var(--text); margin-left:6px; font-weight:600; letter-spacing:0.2px; }
+  .nav-links{ display:flex; gap:18px; align-items:center; }
+  .nav-links a{ color:var(--muted); text-decoration:none; padding:8px 10px; border-radius:8px; font-weight:500; }
+  .nav-links a.active, .nav-links a:hover{ color:white; background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.06)); }
 
-    /* HAMBURGER */
-    .hamburger {
-        display: none;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-    }
-    .hamburger div {
-        width: 26px;
-        height: 3px;
-        background: #fff;
-        border-radius: 2px;
-    }
+  /* theme + download buttons */
+  .controls{ display:flex; gap:10px; align-items:center; }
+  .accent-picker{ display:flex; gap:8px; }
+  .color-btn{ width:26px; height:26px; border-radius:8px; cursor:pointer; border: 2px solid rgba(255,255,255,0.06); }
+  .download-cv{ background: linear-gradient(90deg,var(--primary), #06b6d4); color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600; }
 
-    .mobile-menu {
-        display: none;
-        flex-direction: column;
-        background: #1e252d;
-        border-top: 1px solid #2f3741;
-        padding: 10px 0;
-    }
-    .mobile-menu a {
-        padding: 12px 20px;
-        border-bottom: 1px solid #2f3741;
-    }
+  /* MOBILE MENU */
+  .hamburger{ display:none; width:40px; height:40px; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; background: rgba(255,255,255,0.02); }
+  .hamburger div{ width:20px; height:2px; background:var(--text); border-radius:2px; transform-origin:center; transition: all .25s; }
+  .mobile{ display:none; }
 
-    /* HERO */
-    .hero {
-        text-align: center;
-        padding: 80px 20px;
-    }
-    .hero h1 {
-        font-size: 42px;
-        font-weight: bold;
-        color: #fff;
-    }
-    .hero p { margin: 15px 0 25px; color: #b5c2cf; }
-    .btn-group { display: flex; justify-content: center; gap: 15px; }
-    .btn {
-        background: #3b82f6;
-        padding: 12px 22px;
-        border-radius: 6px;
-        color: #fff;
-        font-size: 15px;
-        cursor: pointer;
-    }
-    .btn-outline {
-        border: 1px solid #3b82f6;
-        padding: 12px 22px;
-        border-radius: 6px;
-        color: #3b82f6;
-        cursor: pointer;
-        background: transparent;
-    }
+  /* LAYOUT */
+  .wrap{ max-width:1100px; margin:28px auto; padding:0 20px; display:grid; gap:30px; }
 
-    /* Section Titles */
-    .section-title {
-        text-align: center;
-        font-size: 28px;
-        margin-bottom: 5px;
-        color: #fff;
-    }
-    .section-sub {
-        text-align: center;
-        color: #9aa5b3;
-        margin-bottom: 30px;
-    }
+  /* HERO */
+  .hero{
+    display:flex; gap:30px; align-items:center; justify-content:space-between;
+  }
+  .hero-left{ max-width:640px; }
+  .eyebrow{ color:var(--primary); font-weight:700; letter-spacing:0.6px; margin-bottom:14px; display:inline-block; background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.04)); padding:6px 10px; border-radius:999px; }
+  .hero h2{ font-size:34px; line-height:1.05; margin-bottom:12px; color:linear-gradient(90deg,var(--primary),#fff); }
+  .typewriter{ color:var(--muted); font-size:18px; margin-bottom:18px; min-height:26px; }
+  .hero p{ color:var(--muted); margin-bottom:18px; max-width:62ch; }
 
-    /* Skill Grid */
-    .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-    }
-    .skill-card {
-        background: #2a323c;
-        padding: 20px;
-        border-radius: 10px;
-    }
-    .skill-card h3 { color: #fff; margin-bottom: 10px; }
-    .bar {
-        background: #3e4651;
-        height: 8px;
-        border-radius: 5px;
-        margin-bottom: 15px;
-        position: relative;
-    }
-    .bar span {
-        position: absolute;
-        height: 100%;
-        background: #3b82f6;
-        border-radius: 5px;
-    }
-    .skill-label { font-size: 14px; display: flex; justify-content: space-between; }
+  .hero-cta{ display:flex; gap:12px; align-items:center; }
+  .btn-primary{ background: linear-gradient(90deg,var(--primary), #06b6d4); color:white; padding:10px 14px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow: 0 8px 30px rgba(6,182,212,0.08); }
+  .btn-ghost{ padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); color:var(--muted); text-decoration:none; }
 
-    /* Project Grid */
-    .project-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 25px;
-    }
-    .project-card {
-        background: #2a323c;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    .project-card img {
-        width: 100%;
-        height: 170px;
-        object-fit: cover;
-    }
-    .project-content {
-        padding: 18px;
-    }
-    .project-content h3 {
-        color: #fff;
-        margin-bottom: 10px;
-    }
-    .project-content p { color: #b5c2cf; font-size: 14px; margin-bottom: 15px; }
-    .project-buttons {
-        display: flex;
-        gap: 10px;
-    }
-    .tag {
-        display: inline-block;
-        background: #3e4651;
-        padding: 5px 10px;
-        font-size: 12px;
-        margin-right: 5px;
-        border-radius: 5px;
-    }
+  .hero-right{
+    width:320px; height:420px; border-radius:18px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    padding:18px; display:flex; align-items:center; justify-content:center; backdrop-filter: blur(var(--card-blur));
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  }
+  .profile{
+    width:100%; height:100%; border-radius:12px; object-fit:cover; box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+  }
 
-    /* AI Suggestions */
-    .ai-box {
-        background: #2a323c;
-        padding: 25px;
-        border-radius: 10px;
-        margin-top: 40px;
-    }
-    .ai-title { font-size: 22px; margin-bottom: 10px; color: #fff; }
-    .input-group { margin-bottom: 18px; }
-    input, textarea {
-        width: 100%;
-        padding: 12px;
-        border-radius: 6px;
-        border: none;
-        outline: none;
-        margin-top: 6px;
-        background: #1e252d;
-        color: #dbe1e7;
-    }
+  /* SECTIONS: cards glass */
+  section { padding:18px 0; }
+  .section-title{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .section-title h3{ color:white; font-size:20px; }
+  .glass-grid{ display:grid; gap:18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .glass-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px; padding:16px; border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(var(--card-blur)); box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    opacity:0; transform: translateY(14px); animation: fadeUp .6s ease forwards;
+  }
+  .glass-card img{ width:100%; height:160px; object-fit:cover; border-radius:8px; margin-bottom:12px; }
 
-    /* Contact */
-    .contact-box {
-        margin-top: 50px;
-        padding: 25px;
-        background: #2a323c;
-        border-radius: 10px;
-    }
+  @keyframes fadeUp {
+    to { opacity:1; transform: translateY(0); }
+  }
 
-    footer {
-        text-align: center;
-        padding: 20px;
-        margin-top: 30px;
-        color: #9aa5b3;
-    }
+  /* CONTACT FORM */
+  .contact-wrap{ display:grid; gap:14px; grid-template-columns: 1fr 320px; align-items:start; }
+  .contact-form{ display:flex; flex-direction:column; gap:12px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  input, textarea, select {
+    background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03);
+    padding:10px 12px; border-radius:8px; color:var(--text); outline:none;
+  }
 
-    /* Scroll to top */
-    #scrollTop {
-        position: fixed;
-        bottom: 25px;
-        right: 25px;
-        background: #3b82f6;
-        padding: 12px 15px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none;
-        color: #fff;
-        font-size: 18px;
-    }
+  /* SCROLL TOP */
+  #scrollTop{ position:fixed; right:18px; bottom:18px; width:44px; height:44px; border-radius:10px; background:linear-gradient(90deg,var(--primary), #06b6d4); display:flex; align-items:center; justify-content:center; color:white; cursor:pointer; box-shadow: 0 8px 30px rgba(6,182,212,0.12); display:none; z-index:999; }
 
-    /* MOBILE */
-    @media (max-width: 600px) {
-        nav ul { display: none; }
-        .hamburger { display: flex; }
-        .hero h1 { font-size: 30px; }
-    }
+  /* RESPONSIVE */
+  @media (max-width: 980px){
+    .hero{ flex-direction:column-reverse; gap:20px; align-items:flex-start; }
+    .hero-right{ width:100%; height:220px; }
+    .contact-wrap{ grid-template-columns: 1fr; }
+    .mobile{ display:block; }
+  }
+  @media (max-width: 720px){
+    .nav-links{ display:none; }
+    .hamburger{ display:flex; }
+    .wrap{ padding:0 16px; }
+  }
 </style>
 </head>
-
 <body>
+
+<!-- PROGRESS BAR -->
+<div id="progress"></div>
 
 <!-- NAV -->
 <nav>
-    <h2>Aashik Majhi</h2>
-
-    <!-- Desktop Menu -->
-    <ul id="navbar">
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-
-    <!-- Hamburger -->
-    <div class="hamburger" onclick="toggleMenu()">
-        <div></div><div></div><div></div>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="logo">AM</div>
+      <div><h1>Aashik Majhi</h1><div style="font-size:12px;color:var(--muted)">Full-Stack & Power Platform</div></div>
     </div>
+
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">Home</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;">
+      <!-- Accent picker -->
+      <div class="accent-picker" title="Pick accent color">
+        <div class="color-btn" style="background:#7c3aed" data-color="#7c3aed"></div>
+        <div class="color-btn" style="background:#06b6d4" data-color="#06b6d4"></div>
+        <div class="color-btn" style="background:#ef4444" data-color="#ef4444"></div>
+      </div>
+
+      <a download="Aashik_Majhi_CV.pdf" href="Aashik_Majhi_CV.pdf" class="download-cv" title="Download CV">Download CV</a>
+
+      <div class="hamburger" id="hamburger" aria-label="menu">
+        <div></div><div></div><div></div>
+      </div>
+    </div>
+  </div>
 </nav>
 
-<!-- Mobile Dropdown -->
-<div class="mobile-menu" id="mobileMenu">
-    <a href="#skills" onclick="toggleMenu()">Skills</a>
-    <a href="#projects" onclick="toggleMenu()">Projects</a>
-    <a href="#contact" onclick="toggleMenu()">Contact</a>
+<!-- MOBILE MENU -->
+<div class="mobile" id="mobileMenu" style="display:none; max-width:1100px; margin:0 auto; padding:8px 20px;">
+  <a href="#hero" style="display:block;padding:10px 0;color:var(--muted)">Home</a>
+  <a href="#skills" style="display:block;padding:10px 0;color:var(--muted)">Skills</a>
+  <a href="#projects" style="display:block;padding:10px 0;color:var(--muted)">Projects</a>
+  <a href="#contact" style="display:block;padding:10px 0;color:var(--muted)">Contact</a>
 </div>
 
-<div class="container">
+<!-- MAIN WRAP -->
+<div class="wrap">
 
-    <!-- HERO -->
-    <section class="hero" id="home">
-        <h1>Expert Full-Stack Developer</h1>
-        <p>Specializing in crafting exceptional digital experiences with Web, Mobile, and Power Platform solutions.</p>
+  <!-- HERO -->
+  <section id="hero" class="hero" aria-label="hero">
+    <div class="hero-left">
+      <div class="eyebrow">Hi — I build products</div>
+      <h2>I'm <strong style="color:var(--primary)">Aashik Majhi</strong> — building modern web & Power Platform solutions</h2>
+      <div class="typewriter" id="typewriter">I design fast interfaces.</div>
+      <p>Frontend & backend developer with a focus on Power Apps automations, FastAPI backends, and polished user experiences. I combine product thinking with strong technical skills.</p>
 
-        <div class="btn-group">
-            <a class="btn-outline" href="#projects">View Projects</a>
-            <a class="btn" href="#contact">Contact Me</a>
-        </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills">
-        <h2 class="section-title">My Technical Skills</h2>
-        <p class="section-sub">A snapshot of the technologies I work with.</p>
-
-        <div class="skills-grid">
-
-            <!-- Skill Category Example -->
-            <div class="skill-card">
-                <h3>Frontend Development</h3>
-
-                <p class="skill-label"><span>React & NextJS</span><span>95%</span></p>
-                <div class="bar"><span style="width:95%"></span></div>
-
-                <p class="skill-label"><span>TypeScript</span><span>92%</span></p>
-                <div class="bar"><span style="width:92%"></span></div>
-
-                <p class="skill-label"><span>Tailwind CSS</span><span>89%</span></p>
-                <div class="bar"><span style="width:89%"></span></div>
-
-                <p class="skill-label"><span>React Native</span><span>85%</span></p>
-                <div class="bar"><span style="width:85%"></span></div>
-            </div>
-
-            <div class="skill-card">
-                <h3>Backend Development</h3>
-
-                <p class="skill-label"><span>NodeJS & Express</span><span>90%</span></p>
-                <div class="bar"><span style="width:90%"></span></div>
-
-                <p class="skill-label"><span>FastAPI</span><span>100%</span></p>
-                <div class="bar"><span style="width:100%"></span></div>
-
-                <p class="skill-label"><span>PostgreSQL</span><span>85%</span></p>
-                <div class="bar"><span style="width:85%"></span></div>
-
-                <p class="skill-label"><span>REST APIs</span><span>92%</span></p>
-                <div class="bar"><span style="width:92%"></span></div>
-            </div>
-
-            <div class="skill-card">
-                <h3>Mobile Development</h3>
-
-                <p class="skill-label"><span>Flutter</span><span>77%</span></p>
-                <div class="bar"><span style="width:77%"></span></div>
-
-                <p class="skill-label"><span>Kotlin</span><span>70%</span></p>
-                <div class="bar"><span style="width:70%"></span></div>
-
-                <p class="skill-label"><span>Java</span><span>60%</span></p>
-                <div class="bar"><span style="width:60%"></span></div>
-
-                <p class="skill-label"><span>Dart</span><span>65%</span></p>
-                <div class="bar"><span style="width:65%"></span></div>
-            </div>
-
-            <div class="skill-card">
-                <h3>Power Platform & Automation</h3>
-
-                <p class="skill-label"><span>Power Apps</span><span>95%</span></p>
-                <div class="bar"><span style="width:95%"></span></div>
-
-                <p class="skill-label"><span>Power Automate</span><span>90%</span></p>
-                <div class="bar"><span style="width:90%"></span></div>
-
-                <p class="skill-label"><span>Dataverse</span><span>85%</span></p>
-                <div class="bar"><span style="width:85%"></span></div>
-
-                <p class="skill-label"><span>SharePoint</span><span>85%</span></p>
-                <div class="bar"><span style="width:85%"></span></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects">
-    <h2 class="section-title" style="margin-top:60px;">Featured Projects</h2>
-    <p class="section-sub">Here are some of the projects I've worked on.</p>
-
-    <div class="project-grid">
-
-        <!-- Project Example -->
-        <h2 class="section-title" style="margin-top:60px;">Featured Projects</h2>
-<p class="section-sub">Here are some of the projects I've worked on.</p>
-
-<div class="project-grid">
-
-    <!-- Project 1 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?11">
-        <div class="project-content">
-            <h3>E-commerce Platform</h3>
-            <p>Full e-commerce platform built using React, Node.js, Express, and PostgreSQL.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#projects">View Projects</a>
+        <a class="btn-ghost" href="#contact">Contact</a>
+      </div>
     </div>
 
-    <!-- Project 2 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?12">
-        <div class="project-content">
-            <h3>Task Management Mobile App</h3>
-            <p>A task scheduler mobile app built with Flutter, Firebase, and Push Notifications.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
+    <div class="hero-right" role="img" aria-label="profile">
+      <!-- Replace with your real profile image -->
+      <img class="profile" src="https://via.placeholder.com/600x800.png?text=Aashik+Majhi" alt="Aashik Majhi">
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" aria-label="skills">
+    <div class="section-title">
+      <h3>Skills</h3>
     </div>
 
-    <!-- Project 3 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?13">
-        <div class="project-content">
-            <h3>Automated Help Desk Solution</h3>
-            <p>A Power Platform based help desk automation using Power Apps and Power Automate.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
+    <div class="glass-grid" id="skillsGrid">
+      <div class="glass-card" style="animation-delay:.06s;">
+        <h4>Frontend</h4>
+        <p style="color:var(--muted)">React, Next.js, TypeScript, Tailwind</p>
+      </div>
+      <div class="glass-card" style="animation-delay:.12s;">
+        <h4>Backend</h4>
+        <p style="color:var(--muted)">FastAPI, Node.js, PostgreSQL, REST</p>
+      </div>
+      <div class="glass-card" style="animation-delay:.18s;">
+        <h4>Mobile</h4>
+        <p style="color:var(--muted)">Flutter, React Native</p>
+      </div>
+      <div class="glass-card" style="animation-delay:.24s;">
+        <h4>Power Platform</h4>
+        <p style="color:var(--muted)">Power Apps, Power Automate, Dataverse</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" aria-label="projects">
+    <div class="section-title">
+      <h3>Featured Projects</h3>
     </div>
 
-    <!-- Project 4 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?14">
-        <div class="project-content">
-            <h3>Restaurant Order Management App</h3>
-            <p>Restaurant order system with role-based access and order tracking built in Power Apps.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
+    <div class="glass-grid" id="projectsGrid">
+      <!-- Replace src with your real thumbnails -->
+      <div class="glass-card" style="animation-delay:.08s;">
+        <img src="https://via.placeholder.com/600x400.png?text=Project+1" alt="Project 1">
+        <h4>Inventory Automation</h4>
+        <p style="color:var(--muted)">Power Apps + IoT sensors for real-time stock tracking.</p>
+      </div>
+
+      <div class="glass-card" style="animation-delay:.12s;">
+        <img src="https://via.placeholder.com/600x400.png?text=Project+2" alt="Project 2">
+        <h4>Task Manager (Mobile)</h4>
+        <p style="color:var(--muted)">Cross-platform app built with Flutter and Firebase.</p>
+      </div>
+
+      <div class="glass-card" style="animation-delay:.16s;">
+        <img src="https://via.placeholder.com/600x400.png?text=Project+3" alt="Project 3">
+        <h4>Vacancy API</h4>
+        <p style="color:var(--muted)">FastAPI backend for job postings, filters, auth.</p>
+      </div>
+
+      <div class="glass-card" style="animation-delay:.20s;">
+        <img src="https://via.placeholder.com/600x400.png?text=Project+4" alt="Project 4">
+        <h4>Portfolio Website</h4>
+        <p style="color:var(--muted)">This portfolio (responsive, modern & simple).</p>
+      </div>
     </div>
+  </section>
 
-    <!-- Project 5 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?15">
-        <div class="project-content">
-            <h3>RFID Access Control App</h3>
-            <p>RFID-based attendance and access monitoring system integrated with SharePoint.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
+  <!-- CONTACT -->
+  <section id="contact" aria-label="contact">
+    <div class="section-title"><h3>Contact</h3></div>
+
+    <div class="contact-wrap">
+      <!-- FORM: FormSubmit by default (easy): replace 'your@email.com' -->
+      <!-- Option A (FormSubmit): set action to https://formsubmit.co/your@email.com
+           Replace the email and the form will email submissions to you.
+           See https://formsubmit.co for details (no JS required). -->
+      <form id="contactForm" class="contact-form" method="POST" action="https://formsubmit.co/YOUR_EMAIL_HERE">
+        <input type="hidden" name="_captcha" value="false">
+        <!-- optional: add _subject or _next fields as required by formsubmit -->
+        <div class="field">
+          <label>Name</label>
+          <input name="name" placeholder="Your name" required>
         </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input name="email" type="email" placeholder="you@domain.com" required>
+        </div>
+
+        <div class="field">
+          <label>Message</label>
+          <textarea name="message" rows="6" placeholder="How can I help?" required></textarea>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn-primary" type="submit">Send Message</button>
+          <button type="button" class="btn-ghost" id="emailJsBtn" title="EmailJS (optional)">
+            Use EmailJS
+          </button>
+        </div>
+
+        <small style="color:var(--muted)">Tip: to avoid spam, replace action with your FormSubmit email. Or click "Use EmailJS" to send via EmailJS (you'll need to add your keys – see commented JS below).</small>
+      </form>
+
+      <div style="padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04);">
+        <h4>Get in touch</h4>
+        <p style="color:var(--muted)">Email: <a href="mailto:aashik@example.com" style="color:var(--primary)">aashik@example.com</a></p>
+        <p style="color:var(--muted)">Also available on LinkedIn & GitHub.</p>
+
+        <div style="margin-top:12px;">
+          <a class="btn-ghost" href="#projects">See Work</a>
+          <a class="btn-primary" href="Aashik_Majhi_CV.pdf" download style="margin-left:8px;">Download CV</a>
+        </div>
+      </div>
     </div>
-
-    <!-- Project 6 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?16">
-        <div class="project-content">
-            <h3>IoT Inventory Management App</h3>
-            <p>An IoT-based inventory management app using Power Apps, Sensors, and Flows.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 7 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?17">
-        <div class="project-content">
-            <h3>Cross-Platform Fitness Tracker</h3>
-            <p>A mobile fitness tracker made with Flutter, integrating workout plans and analytics.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 8 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?18">
-        <div class="project-content">
-            <h3>Vacancy Management REST API</h3>
-            <p>A complete RESTAPI backend for job vacancy posting, filtering, and authentication.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 9 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?19">
-        <div class="project-content">
-            <h3>Portfolio Website</h3>
-            <p>This portfolio website showcasing all my skills, experience, and project work.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 10 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?20">
-        <div class="project-content">
-            <h3>Visitor Management System</h3>
-            <p>Visitor entry, approvals, and badge printing app built using Power Platform.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 11 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?21">
-        <div class="project-content">
-            <h3>Client Project Time Tracking App</h3>
-            <p>An app to track work hours, client billing, and reporting using Power Apps.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Project 12 -->
-    <div class="project-card">
-        <img src="https://picsum.photos/600/400?22">
-        <div class="project-content">
-            <h3>Automated Data Pipeline for Power BI</h3>
-            <p>A pipeline that automates data pulling, transformation, and reporting into Power BI.</p>
-            <div class="project-buttons">
-                <a class="btn-outline">GitHub</a>
-                <a class="btn">Live Demo</a>
-            </div>
-        </div>
-    </div>
-
-</div>
-</section>
-
-<div class="ai-box">
-        <h3 class="ai-title">💡 AI Portfolio Suggestions</h3>
-
-        <div class="input-group">
-            <label>Your Portfolio Area</label>
-            <input type="text" placeholder="e.g. Full-stack developer…">
-        </div>
-
-        <div class="input-group">
-            <label>Target Industry or Track</label>
-            <input type="text" placeholder="e.g. Web Development, AI, Cloud…">
-        </div>
-
-        <a class="btn" href="#">Get Suggestions</a>
-    </div>
-
-    <!-- CONTACT -->
-    <section id="contact">
-        <h2 class="section-title" style="margin-top:60px;">Get In Touch</h2>
-
-        <div class="contact-box">
-            <div class="input-group">
-                <label>Name</label>
-                <input type="text" placeholder="Your Name">
-            </div>
-
-            <div class="input-group">
-                <label>Email</label>
-                <input type="email" placeholder="example@email.com">
-            </div>
-
-            <div class="input-group">
-                <label>Message</label>
-                <textarea rows="4" placeholder="Type your message…"></textarea>
-            </div>
-
-            <a class="btn" href="#">Send Message</a>
-        </div>
-    </section>
-
-    <footer>
-        © 2025 Aashik Majhi. All rights reserved.
-    </footer>
+  </section>
 
 </div>
 
-<!-- Scroll to top -->
-<div id="scrollTop" onclick="scrollToTop()">↑</div>
+<!-- SCROLL TOP -->
+<div id="scrollTop" title="Back to top">↑</div>
 
 <script>
-    /* MOBILE MENU */
-    function toggleMenu() {
-        const menu = document.getElementById("mobileMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+/* ====== Progress bar ====== */
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', ()=> {
+  const h = document.documentElement;
+  const percent = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = percent + '%';
+
+  // scrollTop visibility
+  document.getElementById('scrollTop').style.display = (h.scrollTop > 300) ? 'flex' : 'none';
+
+  // active nav link
+  document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+  const sections = ['hero','skills','projects','contact'];
+  for (let i = sections.length-1; i >=0; i--) {
+    const sec = document.getElementById(sections[i]);
+    if (!sec) continue;
+    if (window.scrollY >= sec.offsetTop - 120) {
+      document.querySelectorAll('.nav-link').forEach(a=>{
+        if (a.getAttribute('href') === '#'+sections[i]) a.classList.add('active');
+      });
+      break;
     }
+  }
+});
 
-    /* ACTIVE NAVIGATION ON SCROLL */
-    const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll("nav ul li a");
+/* ====== Mobile menu toggle ====== */
+const hamb = document.getElementById('hamburger');
+const mobile = document.getElementById('mobileMenu');
+hamb.addEventListener('click', ()=> {
+  const show = mobile.style.display === 'block';
+  mobile.style.display = show ? 'none' : 'block';
+  // animate hamburger (simple)
+  hamb.classList.toggle('open');
+});
 
-    window.addEventListener("scroll", () => {
-        let current = "";
+/* ====== Scroll to top ====== */
+document.getElementById('scrollTop').addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
 
-        sections.forEach((section) => {
-            const top = window.scrollY;
-            if (top >= section.offsetTop - 200) {
-                current = section.getAttribute("id");
-            }
-        });
+/* ====== Accent color picker (theme color switcher) ====== */
+document.querySelectorAll('.color-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const color = btn.getAttribute('data-color');
+    document.documentElement.style.setProperty('--primary', color);
+  });
+});
 
-        navLinks.forEach((a) => {
-            a.classList.remove("active");
-            if (a.getAttribute("href") === "#" + current) {
-                a.classList.add("active");
-            }
-        });
+/* ====== Typewriter hero text (loop) ====== */
+const phrases = [
+  'I design fast interfaces.',
+  'I build automation flows with Power Platform.',
+  'I develop reliable backends (FastAPI, Node).',
+  'I ship responsive mobile apps.'
+];
+let ti = 0, pi = 0, direction = 1;
+const tw = document.getElementById('typewriter');
 
-        /* Scroll-to-top visibility */
-        document.getElementById("scrollTop").style.display =
-            window.scrollY > 300 ? "block" : "none";
-    });
-
-    /* Scroll to top */
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+function typeLoop(){
+  const txt = phrases[pi];
+  if (ti <= txt.length && direction===1) {
+    tw.textContent = txt.slice(0,ti);
+    ti++;
+    setTimeout(typeLoop, 45);
+  } else if (direction===1) {
+    direction = -1;
+    setTimeout(typeLoop, 1200);
+  } else {
+    tw.textContent = txt.slice(0,ti);
+    ti--;
+    if (ti >= 0) setTimeout(typeLoop, 35);
+    else {
+      direction = 1; pi = (pi+1)%phrases.length; ti = 0;
+      setTimeout(typeLoop, 300);
     }
+  }
+}
+typeLoop();
+
+/* ====== Fade-in on scroll for glass-cards (simple) ====== */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if (e.isIntersecting) {
+      e.target.style.animationPlayState = 'running';
+      e.target.style.opacity = 1;
+    }
+  });
+},{ threshold: 0.12 });
+
+document.querySelectorAll('.glass-card').forEach((c)=> {
+  observer.observe(c);
+});
+
+/* ====== Scroll-to-section for mobile menu clicks ====== */
+document.querySelectorAll('#mobileMenu a').forEach(a=>{
+  a.addEventListener('click', ()=> { mobile.style.display='none'; });
+});
+
+/* ====== Contact form helpers ====== */
+/* Option B: EmailJS (optional) - you'll need to include your EmailJS user id, service ID and template ID.
+   Uncomment and fill values to use EmailJS directly (client-side).
+
+   Example:
+   emailjs.send(serviceID, templateID, templateParams, userID)
+   .then(() => alert('Sent'), (err)=>alert('Error'));
+
+   You'll need to include the EmailJS SDK:
+   <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+   emailjs.init('YOUR_EMAILJS_USER_ID');
+
+   For security it is recommended to use server-side sending for production.
+*/
+
+/* Quick demo: contact button to prefill FormSubmit action (client-side example)
+   Currently the form posts to FormSubmit. Replace the action attribute with your FormSubmit endpoint:
+   action="https://formsubmit.co/aashikmajhi@gmail.com"
+*/
+document.getElementById('emailJsBtn').addEventListener('click', ()=>{
+  alert('To use EmailJS, add your EmailJS SDK script and keys in the code (see comments). For now, the form is configured for FormSubmit. Replace the form action with your FormSubmit email.');
+});
+
+/* ====== Small enhancement: ensure nav link clicks close mobile menu on small screens ====== */
+document.querySelectorAll('.nav-links a, #mobileMenu a').forEach(a=>{
+  a.addEventListener('click', ()=> { if (mobile) mobile.style.display='none'; });
+});
+
 </script>
-
 </body>
 </html>
